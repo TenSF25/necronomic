@@ -1,0 +1,76 @@
+.options {
+  display: flex;
+  flex-direction: row;
+  height: 20px;
+  width: 100%;
+  margin: 0;
+  padding: 0;
+  background-color: rgb(236, 251, 254);
+  border-bottom: 1px solid black;
+  color: #000;
+  font-size: 13px;
+}
+
+.containerLeft {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-around;
+}
+
+.select {
+  appearance: none;
+  background: none;
+  border-right: 1px solid black;
+  padding-left: 10px;
+  padding-right: 10px;
+  outline: none;
+}
+
+.space {
+  padding-left: 10px;
+  padding-right: 10px;
+  border-right: 1px solid black;
+  border-left: none;
+}
+
+.containerRight {
+  display: flex;
+  margin-left: auto;
+}
+
+.data {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+}
+
+.li {
+    padding-left: 10px;
+    padding-right: 10px;
+    border-left: 1px solid black;
+}
+
+/*Page*/
+.containerApps {
+    display: flex;
+    flex-direction: column;
+    float: right;
+    margin-top: 20px;
+    gap: 30px;
+    margin-right: 20px;
+}
+
+.appItems {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+    cursor: url('./utils/click.svg') 3 0, auto;
+}
+
+.appWindow {
+  width: auto;
+  height: auto;
+  position: relative;
+}
