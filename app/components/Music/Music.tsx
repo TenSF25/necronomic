@@ -23,6 +23,7 @@ export default function App3({ onClose }: { onClose: () => void }) {
   const [currentTrack, setCurrentTrack] = useState<Music | null>(null);
   const [isPlaying, setIsPlaying] = useState(false);
   const [progress, setProgress] = useState(0);
+  const [audioDuration, setAudioDuration] = useState(0);
 
   const audioRef = useRef<HTMLAudioElement | null>(null);
 
@@ -49,20 +50,31 @@ export default function App3({ onClose }: { onClose: () => void }) {
     if (!audioRef.current) return;
 
     const updateProgress = () => {
-      setProgress(
-        (audioRef.current!.currentTime / audioRef.current!.duration) * 100 || 0
-      );
+      if (audioRef.current) {
+        setProgress(
+          (audioRef.current.currentTime / audioRef.current.duration) * 100 || 0
+        );
+      }
+    };
+
+    const setDuration = () => {
+      if (audioRef.current) {
+        setAudioDuration(audioRef.current.duration);
+      }
     };
 
     audioRef.current.addEventListener("timeupdate", updateProgress);
+    audioRef.current.addEventListener("loadedmetadata", setDuration);
 
     return () => {
       audioRef.current?.removeEventListener("timeupdate", updateProgress);
+      audioRef.current?.removeEventListener("loadedmetadata", setDuration);
     };
-  }, [isPlaying]);
+  }, [currentTrack]); // Se actualiza cuando cambia la canción
 
   const togglePlay = () => {
     if (!audioRef.current) return;
+
     if (audioRef.current.paused) {
       audioRef.current.play();
       setIsPlaying(true);
@@ -74,8 +86,7 @@ export default function App3({ onClose }: { onClose: () => void }) {
 
   const handleSeek = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (audioRef.current) {
-      const newTime =
-        (parseFloat(e.target.value) / 100) * audioRef.current.duration;
+      const newTime = (parseFloat(e.target.value) / 100) * audioRef.current.duration;
       audioRef.current.currentTime = newTime;
       setProgress(parseFloat(e.target.value));
     }
@@ -89,8 +100,12 @@ export default function App3({ onClose }: { onClose: () => void }) {
         setIsPlaying(true);
       }
     } else {
+      if (audioRef.current) {
+        audioRef.current.pause(); // Pausar antes de cambiar la pista
+      }
       setCurrentTrack(track);
       setIsPlaying(false);
+      setProgress(0);
     }
   };
 
@@ -120,11 +135,7 @@ export default function App3({ onClose }: { onClose: () => void }) {
                 <div className={styles.album}>
                   <h2>{currentTrack.nameMusic}</h2>
                   <h3>{currentTrack.albumMusic}</h3>
-                  <audio
-                    ref={audioRef}
-                    src={currentTrack.urlMusic}
-                    autoPlay={isPlaying}
-                  ></audio>
+                  <audio ref={audioRef} src={currentTrack.urlMusic} />
                 </div>
                 <button className={styles.playAudio} onClick={togglePlay}>
                   {isPlaying ? (
@@ -143,6 +154,10 @@ export default function App3({ onClose }: { onClose: () => void }) {
                   onChange={handleSeek}
                   className={styles.range}
                 />
+                <div className={styles.timeDisplay}>
+                  <span>{Math.floor((progress / 100) * audioDuration)}s</span> /{" "}
+                  <span>{Math.floor(audioDuration)}s</span>
+                </div>
               </div>
               <div className={styles.containerThemes}>
                 {music.map((track, index) => (

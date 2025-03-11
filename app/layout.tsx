@@ -100,8 +100,8 @@ export default function RootLayout({ children }: Readonly<{ children: React.Reac
     if (existingApp) return; // App already open, do nothing
 
     try {
-      const module = await import(`./components/${appName}/${appName}`);
-      const NewComponent = module.default;
+      const importModule = await import(`./components/${appName}/${appName}`);
+      const NewComponent = importModule.default;
       const newZIndex = openedApps.length + 1;
       setOpenedApps((prev) => [...prev, { name: appName, Component: NewComponent, zIndex: newZIndex }]);
     } catch (error) {

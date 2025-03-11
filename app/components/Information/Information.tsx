@@ -36,7 +36,7 @@ export default function Themes({
     if (ref.current) {
       setTarget(ref.current);
     }
-  }, [ref.current]);
+  }, []);
 
   return (
     <div className={styles.appContent} ref={ref}>

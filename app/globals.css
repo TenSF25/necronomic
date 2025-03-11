@@ -36,3 +36,23 @@ body {
   height: auto;
   overflow: hidden;
 }
+
+::-webkit-scrollbar {
+  width: 15px;
+  height: auto;
+}
+
+::-webkit-scrollbar-track {
+  border-left: 1px solid black;
+  background-color: rgb(236, 241, 254);
+}
+
+::-webkit-scrollbar-thumb {
+  border: 1px solid black;
+  background-size: 100% 100%;
+  background-color: rgb(236, 251, 254);
+}
+
+::-webkit-scrollbar-corner {
+  background: black;
+}

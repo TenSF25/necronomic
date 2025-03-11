@@ -66,8 +66,8 @@ export default function Page() {
     try {
       // Dynamically load the app component
       if (typeContent !== "folder") {
-        const module = await import(`./components/${appName}/${appName}`);
-        const NewComponent = module.default;
+        const importModule = await import(`./components/${appName}/${appName}`);
+        const NewComponent = importModule.default;
 
         // Calculate new zIndex for the opened app
         const newZIndex = Math.max(0, ...openedApps.map((app) => app.zIndex)) + 1;
@@ -79,8 +79,8 @@ export default function Page() {
         ]);
       } else {
         // If the content type is "folder", load the folder component
-        const module = await import(`./components/${typeContent}/${typeContent}`);
-        const NewComponent = module.default;
+        const importModule = await import(`./components/${typeContent}/${typeContent}`);
+        const NewComponent = importModule.default;
 
         const newZIndex = Math.max(0, ...openedApps.map((app) => app.zIndex)) + 1;
 
