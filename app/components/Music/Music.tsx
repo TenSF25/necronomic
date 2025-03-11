@@ -1,5 +1,3 @@
-"use client";
-
 import styles from "./music.module.css";
 import { orbitron } from "@/app/ui/fonts";
 import Moveable from "react-moveable";
@@ -10,6 +8,7 @@ import pause from "../../utils/pause.svg";
 import cdIcon from "../../utils/cd.svg";
 
 type Music = {
+  name: string;
   nameMusic: string;
   urlMusic: string;
   albumMusic: string;
@@ -17,7 +16,15 @@ type Music = {
   imageMusic: string;
 };
 
-export default function App3({ onClose }: { onClose: () => void }) {
+export default function App3({
+  onClose,
+  name,
+  content,
+}: {
+  onClose: () => void;
+  name: string;
+  content: Array<Music>;
+}) {
   const ref = useRef<HTMLDivElement | null>(null);
   const [music, setMusic] = useState<Music[]>([]);
   const [currentTrack, setCurrentTrack] = useState<Music | null>(null);
@@ -30,17 +37,16 @@ export default function App3({ onClose }: { onClose: () => void }) {
   // Fetch music data
   const fetchData = useCallback(async () => {
     try {
-      const response = await fetch(
-        "https://necronomicapitalism.cloud/wp-json/wp/v2/apps"
+      // Filtramos la data para solo obtener los items de typeContent "music" y que coincidan con el nombre de la app
+      const musicData = content.filter(
+        (m) => m.typeContent === "music" && m.name === name
       );
-      const data = await response.json();
-      const musicData = data.filter((m: Music) => m.typeContent === "music");
       setMusic(musicData);
       if (musicData.length > 0) setCurrentTrack(musicData[0]);
     } catch (error) {
       console.error("Error fetching music data:", error);
     }
-  }, []);
+  }, [content, name]);
 
   useEffect(() => {
     fetchData();
@@ -116,7 +122,7 @@ export default function App3({ onClose }: { onClose: () => void }) {
           <ul className={`${styles.ulContent} ${orbitron.className}`}>
             <li onClick={onClose}>X</li>
             <li>======================</li>
-            <li>Media Player</li>
+            <li>{name}</li>
           </ul>
         </nav>
 

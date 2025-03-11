@@ -12,6 +12,7 @@ import icon from "../../utils/icon.png";
 import Moveable from "react-moveable";
 
 type Themes = {
+  name: string;
   title: string;
   image: string;
   typeContent: string;
@@ -19,9 +20,11 @@ type Themes = {
 
 export default function Themes({
   onClose,
+  nameApp,
   setBackground,
 }: {
   onClose: () => void;
+  nameApp: string;
   setBackground: (image: string) => void;
 }) {
   const [themes, setThemes] = useState<Themes[]>([]);
@@ -45,6 +48,8 @@ export default function Themes({
       setTarget(ref.current);
     }
   }, []);
+
+  const themesFilter = themes.filter((theme) => theme.name === nameApp);
 
   return (
     <div>
@@ -90,7 +95,7 @@ export default function Themes({
             <h2>Select a desktop theme</h2>
           </div>
           <div className={styles.containerThemes}>
-            {themes.map(
+            {themesFilter.map(
               (theme, index) =>
                 theme.typeContent === "themes" && (
                   <div

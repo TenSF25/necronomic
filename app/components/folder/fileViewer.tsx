@@ -46,6 +46,18 @@ const FileViewer: React.FC<FileViewerProps> = ({ open, onClose }) => {
               className="w-full h-64 rounded-lg shadow-md"
               title={open.title}
             />
+          ) : open.type.startsWith("text/plain") ? (
+            <iframe
+              src={open.url}
+              className="w-full h-64 rounded-lg shadow-md"
+              title={open.title}
+            />
+          ) : open.type.startsWith("application/vnd") ? (
+            <iframe
+              src={open.url}
+              className="w-full h-64 rounded-lg shadow-md"
+              title={open.title}
+            />
           ) : (
             <p className="text-gray-600">Unsupported file type</p>
           )}

@@ -60,6 +60,10 @@ It has the following options:
 - `Music`: Audio files with title, album, image and URL.
 - `Folder`: Allows uploading files organized in folders.
 
+- **Adding Content to an Existing App**
+To continue adding content to an already created app, configure it again with the same **app type**, **name**, and **content type** as the existing one. Then, add the new information you want to include.
+
+
 🔹 **Note**: When creating an app, the name must match that of the component to be used (except in `Folder` type apps, where I am working on improving this restriction).
 
 #### **Data Control**

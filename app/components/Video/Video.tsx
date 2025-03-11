@@ -19,10 +19,17 @@ type Video = {
   };
 };
 
-export default function VideoPlayer({ onClose }: { onClose: () => void }) {
+export default function VideoPlayer({ 
+  onClose,
+  name,
+  content
+ }: { 
+  onClose: () => void;
+  name: string;
+  content: Array<Video>;
+ }) {
   const ref = useRef<HTMLDivElement | null>(null);
   const [target, setTarget] = useState<HTMLElement | null>(null);
-  const [videos, setVideos] = useState<Video[]>([]);
   const [currentVideo, setCurrentVideo] = useState<Video | null>(null);
 
   const videoRef = useRef<HTMLVideoElement | null>(null);
@@ -33,30 +40,18 @@ export default function VideoPlayer({ onClose }: { onClose: () => void }) {
     return doc.body.textContent || "";
   };
 
-  useEffect(() => {
-    const fetchMedia = async () => {
-      const response = await fetch(
-        "https://necronomicapitalism.cloud/wp-json/wp/v2/media"
-      );
-      const data = await response.json();
-
-      const filteredVideos = data.filter(
-        (video: Video) =>
-          video.mime_type.startsWith("video/") &&
-          extractTextFromHTML(video.description.rendered).includes("Media")
-      );
-
-      setVideos(filteredVideos);
-    };
-
-    fetchMedia();
-  }, []);
+  const filteredVideos = content.filter(
+    (video) =>
+      video.mime_type && video.mime_type.startsWith("video/") && // Asegura que video.mime_type no sea undefined
+      extractTextFromHTML(video.description.rendered).includes("Media")
+  );
+  
 
   useEffect(() => {
-    if (videos.length > 0) {
-      setCurrentVideo(videos[0]);
+    if (filteredVideos.length > 0) {
+      setCurrentVideo(filteredVideos[0]);
     }
-  }, [videos]);
+  }, [filteredVideos]);
 
   useEffect(() => {
     if (ref.current) {
@@ -95,7 +90,7 @@ export default function VideoPlayer({ onClose }: { onClose: () => void }) {
           <ul className={`${styles.ulContent} ${orbitron.className}`}>
             <li onClick={onClose}>X</li>
             <li>======================</li>
-            <li>Video Player</li>
+            <li>{name}</li>
           </ul>
         </nav>
 
@@ -134,7 +129,7 @@ export default function VideoPlayer({ onClose }: { onClose: () => void }) {
                 className={styles.containerVideos}
                 style={{ maxHeight: "200px", overflowY: "auto" }}
               >
-                {videos.map((video, index) => (
+                {filteredVideos.map((video, index) => (
                   <div
                     key={index}
                     className={styles.videoItems}

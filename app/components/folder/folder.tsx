@@ -39,7 +39,7 @@ export default function Media({
     }
   }, []);
 
-  const validMimeTypes = ['image/jpeg', 'image/webp', 'image/avif', 'video/mp4', 'image/png', 'application/pdf'];
+  const validMimeTypes = ['image/jpeg', 'image/webp', 'image/avif', 'video/mp4', 'image/png', 'application/pdf', 'text/plain', 'application/vnd.openxmlformats-officedocument.wordprocessingml.document'];
 
   const filteredMedia = mediaFile.filter(
     (fileC) => fileC.description.rendered.includes(folderName) && validMimeTypes.includes(fileC.mime_type),

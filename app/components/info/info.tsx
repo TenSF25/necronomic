@@ -6,6 +6,7 @@ import { useState, useEffect, useRef } from "react";
 import Moveable from "react-moveable";
 
 type Info = {
+  name: string;
   title: string;
   image: string;
   typeContent: string;
@@ -13,24 +14,16 @@ type Info = {
 
 export default function Themes({
   onClose,
+  name,
+  content
 }: {
   onClose: () => void;
   setBackground: (image: string) => void;
+  name: string;
+  content: Array<Info>;
 }) {
-  const [info, setInfo] = useState<Info[]>([]);
   const [target, setTarget] = useState<HTMLElement | null>(null);
   const ref = useRef<HTMLDivElement>(null);
-
-  useEffect(() => {
-    const fetchData = async () => {
-      const response = await fetch(
-        "https://necronomicapitalism.cloud/wp-json/wp/v2/apps/"
-      );
-      const data = await response.json();
-      setInfo(data);
-    };
-    fetchData();
-  }, []);
 
   useEffect(() => {
     if (ref.current) {
@@ -38,17 +31,21 @@ export default function Themes({
     }
   }, []);
 
+  console.log(content);
+
+  const filteredContent = content.filter((content) => content.name === name)
+
   return (
     <div className={styles.appContent} ref={ref}>
       <nav className={styles.navContent}>
         <ul className={`${styles.ulContent} ${orbitron.className}`}>
           <li onClick={onClose}>X</li>
           <li>======================</li>
-          <li>Info</li>
+          <li>{name}</li>
         </ul>
       </nav>
       <div className={styles.infoContainer}>
-        {info.map((item, index) => (
+        {filteredContent.map((item, index) => (
           item.typeContent === "info" ? (
             <div key={index}>
               <p className={styles.infoText}>{item.title}</p>

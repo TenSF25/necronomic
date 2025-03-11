@@ -5,6 +5,7 @@ import { useEffect, useState } from "react";
 import styles from "./home.module.css";
 import { orbitron } from "@/app/ui/fonts";
 import Folder from "./components/folder/folder";
+import VideoPlayer from "./components/video/video";
 
 // Defining types used in the state
 type Post = {
@@ -15,13 +16,17 @@ type Post = {
   title: string;           // Title of the app
   image: string;           // Image associated with the app
   url: string;             // URL related to the app (if applicable)
+  nameMusic: string;
+  album: string;
+  imageMusic: string;
+  urlMusic: string;
   checkbox: string;        // Checkbox to determine if the app should open by default
   id: string;              // Unique ID for the app
 };
 
 type OpenApp = {
   name: string;            // Name of the opened app
-  Component: React.ComponentType<{ onClose: () => void }>; // App component
+  Component: React.ComponentType<{ onClose: () => void, name: string, content: Post[] }>; // App component
   zIndex: number;          // Z-index for window stacking
   typeContent: string;     // Content type of the opened app
 };
@@ -66,7 +71,7 @@ export default function Page() {
     try {
       // Dynamically load the app component
       if (typeContent !== "folder") {
-        const importModule = await import(`./components/${appName}/${appName}`);
+        const importModule = await import(`./components/${typeContent}/${typeContent}`);
         const NewComponent = importModule.default;
 
         // Calculate new zIndex for the opened app
@@ -185,25 +190,39 @@ export default function Page() {
       </div>
 
       {/* Displays the opened components */}
-      {openedApps.map(({ name, Component, typeContent, zIndex }) => (
-        typeContent !== "folder" ? (
-          <div
-            key={name}
-            style={{ position: "absolute", zIndex }}
-            onClick={() => bringToFront(name)}
-          >
-            <Component onClose={() => closeApp(name)} />
-          </div>
-        ) : (
-          <div
-            key={name}
-            style={{ position: "absolute", zIndex }}
-            onClick={() => bringToFront(name)}
-          >
-            <Folder onClose={() => closeApp(name)} folderName={name} mediaFile={media} />
-          </div>
-        )
-      ))}
+      {openedApps.map(({ name, Component, typeContent, zIndex }) => {
+        if (typeContent === "folder") {
+          return (
+            <div
+              key={name}
+              style={{ position: "absolute", zIndex }}
+              onClick={() => bringToFront(name)}
+            >
+              <Folder onClose={() => closeApp(name)} folderName={name} mediaFile={media} />
+            </div>
+          );
+        } else if (typeContent === "video") {
+          return (
+            <div
+              key={name}
+              style={{ position: "absolute", zIndex }}
+              onClick={() => bringToFront(name)}
+            >
+              <VideoPlayer onClose={() => closeApp(name)} name={name} content={media} />
+            </div>
+          );
+        }  else {
+          return (
+            <div
+              key={name}
+              style={{ position: "absolute", zIndex }}
+              onClick={() => bringToFront(name)}
+            >
+              <Component onClose={() => closeApp(name)} name={name} content={apps} />
+            </div>
+          );
+        }
+      })}
     </div>
   );
 }
