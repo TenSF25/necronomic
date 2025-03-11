@@ -1,0 +1,92 @@
+.appContent {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 20px;
+  background-color: #181818;
+  overflow: hidden;
+  max-width: 1000px;
+  width: auto;
+}
+
+.navContent {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  padding: 10px;
+  background-color: #222;
+}
+
+.ulContent {
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  align-items: center;
+  gap: 20px;
+}
+
+.videoPlayer {
+  width: 100%;
+  max-width: 800px;
+  height: 500px;
+  background: transparent;
+  background-size: cover;
+  background-position: center;
+  position: relative;
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.5);
+}
+
+.videoElement {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  border-radius: 12px;
+}
+
+.playButton {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  cursor: pointer;
+  z-index: 2;
+}
+
+.videoControls {
+  color: white;
+  text-align: center;
+  margin-top: 15px;
+}
+
+.containerVideos {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  margin-top: 20px;
+}
+
+.videoItems {
+  width: 200px;
+  margin: 10px;
+  cursor: pointer;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  background-color: #333;
+  padding: 10px;
+  border-radius: 8px;
+}
+
+.icon {
+  width: 30px;
+  height: 30px;
+  margin-bottom: 5px;
+}
+
+.videoItems h2 {
+  font-size: 14px;
+  color: white;
+}

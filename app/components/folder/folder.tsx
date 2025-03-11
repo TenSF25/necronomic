@@ -1,40 +1,49 @@
-'use client';
+"use client";
 
-import styles from "../component.module.css";
+import styles from "../Themes/info.module.css";
 import { orbitron } from "@/app/ui/fonts";
 import Moveable from "react-moveable";
 import { useRef, useState, useEffect } from "react";
 import Image from "next/image";
 import fileIcon from "../../utils/file.svg";
-import FileViewer from "./fileViewer"; // Importamos el visor
+import FileViewer from "./fileViewer";
 
 type Media = {
   id: number;
   title: { rendered: string };
   source_url: string;
   mime_type: string;
+  description: { rendered: string };
 };
 
-export default function App3({ onClose }: { onClose: () => void }) {
+export default function Media({
+  onClose,
+  folderName,
+  mediaFile
+}: {
+  onClose: () => void;
+  folderName: string;
+  mediaFile: Array<Media>;
+}) {
   const ref = useRef<HTMLDivElement>(null);
   const [target, setTarget] = useState<HTMLElement | null>(null);
-  const [media, setMedia] = useState<Media[]>([]);
-  const [open, setOpen] = useState<{ title: string; url: string; type: string } | null>(null);
-
-  useEffect(() => {
-    const fetchMedia = async () => {
-      const response = await fetch("https://necronomicapitalism.cloud/wp-json/wp/v2/media");
-      const data = await response.json();
-      setMedia(data);
-    };
-    fetchMedia();
-  }, []);
+  const [open, setOpen] = useState<{
+    title: string;
+    url: string;
+    type: string;
+  } | null>(null);
 
   useEffect(() => {
     if (ref.current) {
       setTarget(ref.current);
     }
   }, []);
+
+  const validMimeTypes = ['image/jpeg', 'image/webp', 'image/avif', 'video/mp4', 'image/png', 'application/pdf'];
+
+  const filteredMedia = mediaFile.filter(
+    (fileC) => fileC.description.rendered.includes(folderName) && validMimeTypes.includes(fileC.mime_type),
+  );
 
   return (
     <div>
@@ -43,22 +52,24 @@ export default function App3({ onClose }: { onClose: () => void }) {
           <ul className={`${styles.ulContent} ${orbitron.className}`}>
             <li onClick={onClose}>X</li>
             <li>======================</li>
-            <li>Necronomic Folder</li>
+            <li>{folderName}</li>
           </ul>
         </nav>
 
         <div className={styles.containerFunctions}>
           <div className={styles.desktopTheme}>
-
             <div className="grid grid-cols-4 gap-x-6 bg-gray-300 text-gray-700 py-3 px-6 rounded-md font-semibold text-left">
-              <p>Archivo</p>
-              <p>Nombre</p>
-              <p className="text-center">Tipo</p>
-              <p className="text-right">Acciones</p>
+              <p>File</p>
+              <p>Name</p>
+              <p className="text-center">Type</p>
+              <p className="text-right">Action</p>
             </div>
 
-            <div className="mt-4 space-y-3">
-              {media.map((fileC) => (
+            <div
+              className="mt-4 space-y-3"
+              style={{ maxHeight: "400px", overflowY: "auto" }}
+            >
+              {filteredMedia.map((fileC) => (
                 <div
                   key={fileC.id}
                   onClick={() =>
@@ -70,7 +81,6 @@ export default function App3({ onClose }: { onClose: () => void }) {
                   }
                   className="grid grid-cols-4 gap-x-6 items-center bg-white shadow p-4 rounded-lg hover:bg-gray-50 transition cursor-pointer"
                 >
-
                   <div className="flex justify-left">
                     <Image src={fileIcon} alt="file" width={40} height={40} />
                   </div>
@@ -80,8 +90,12 @@ export default function App3({ onClose }: { onClose: () => void }) {
                   <p className="text-gray-500 text-center">{fileC.mime_type}</p>
 
                   <div className="text-right">
-                    <a href={fileC.source_url} download className="text-blue-500 hover:underline">
-                      Descargar
+                    <a
+                      href={fileC.source_url}
+                      target="__blank"
+                      className="text-blue-500 hover:underline"
+                    >
+                      Redirect
                     </a>
                   </div>
                 </div>

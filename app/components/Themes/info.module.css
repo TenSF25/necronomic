@@ -1,0 +1,112 @@
+.appContent {
+  background-color: rgb(236, 251, 254);
+  width: max-content;
+  border: 1px solid black;
+  padding: 0 5px 30px 5px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  position: relative;
+}
+
+.ulContent {
+  display: flex;
+  flex-direction: row;
+  gap: 5px;
+  color: #000;
+  font-size: 13px;
+}
+
+.computerContainer {
+  max-height: 100px;
+}
+
+.image {
+  margin-top: 20px;
+  position: relative;
+  z-index: 1;
+  display: inline-block;
+}
+
+.fondos {
+  position: absolute;
+  z-index: 10;
+  left: 54px;
+  top: 56px;
+  height: 120px;
+}
+
+.desktopTheme {
+  color: #000;
+  font-size: 12px;
+  font-family: Arial, Helvetica, sans-serif;
+  margin-top: 7px;
+}
+
+.containerFunctions {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 7px;
+}
+
+.containerThemes {
+  width: 249px;
+  height: auto;
+  max-height: 98px;
+  background-color: #fff;
+  overflow-y: auto;
+  overflow-x: hidden;
+  border: 1px solid black;
+}
+
+.themeItems {
+  display: flex;
+  flex-direction: row;
+  gap: 10px;
+  font-size: 11px;
+  font-family: Arial, Helvetica, sans-serif;
+  margin: 5px;
+}
+
+.icon {
+  image-rendering: pixelated;
+  height: 16px;
+}
+
+::-webkit-scrollbar {
+  width: 15px;
+  height: auto;
+}
+
+::-webkit-scrollbar-track {
+  border-left: 1px solid black;
+  background-color: rgb(236, 241, 254);
+}
+
+::-webkit-scrollbar-thumb {
+  border: 1px solid black;
+  background-size: 100% 100%;
+  background-color: rgb(236, 251, 254);
+}
+
+::-webkit-scrollbar-corner {
+  background: black;
+}
+
+.applyButton {
+  margin-left: auto;
+  width: auto;
+  border: 1px solid #000;
+  display: block;
+  border-radius: 3px;
+  background: #0000;
+  padding: 0.5em 5px;
+  font-family: Arial, Helvetica, sans-serif;
+  text-align: center;
+  outline: none;
+  font-size: 16px;
+  color: #000;
+  text-decoration: none;
+}

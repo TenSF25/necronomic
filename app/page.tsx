@@ -1,61 +1,172 @@
 "use client";
 
+// Importing necessary libraries and styles
 import { useEffect, useState } from "react";
 import styles from "./home.module.css";
 import { orbitron } from "@/app/ui/fonts";
+import Folder from "./components/folder/folder";
 
+// Defining types used in the state
 type Post = {
-  title: string;
-  icon: string;
-  type: string;
-  id: string;
+  name: string;            // Name of the app
+  icon: string;            // App icon
+  type: string;            // Type of the app (desktop, etc.)
+  typeContent: string;     // Type of content (e.g., "folder", "hiper", etc.)
+  title: string;           // Title of the app
+  image: string;           // Image associated with the app
+  url: string;             // URL related to the app (if applicable)
+  checkbox: string;        // Checkbox to determine if the app should open by default
+  id: string;              // Unique ID for the app
 };
 
 type OpenApp = {
-  name: string;
-  Component: React.ComponentType<{ onClose: () => void }>;
+  name: string;            // Name of the opened app
+  Component: React.ComponentType<{ onClose: () => void }>; // App component
+  zIndex: number;          // Z-index for window stacking
+  typeContent: string;     // Content type of the opened app
+};
+
+type Media = {
+  id: number;              // Media file ID
+  title: { rendered: string }; // Media file title
+  source_url: string;      // URL for the media file
+  mime_type: string;       // MIME type of the media
+  description: { rendered: string }; // Description of the media file
 };
 
 export default function Page() {
+  // State to manage apps and opened apps
   const [apps, setApps] = useState<Post[]>([]);
   const [openedApps, setOpenedApps] = useState<OpenApp[]>([]);
 
+  // useEffect to fetch apps from an external API
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await fetch("https://necronomicapitalism.cloud/wp-json/wp/v2/apps");
+        const response = await fetch(
+          "https://necronomicapitalism.cloud/wp-json/wp/v2/apps"
+        );
         const data = await response.json();
-        setApps(data);
+        setApps(data); // Update state with the fetched data
       } catch (error) {
-        console.error("Error al obtener datos:", error);
+        console.error("Error fetching data:", error); // Log error if fetching fails
       }
     };
-    fetchData();
-  }, []);
+    fetchData(); // Call the function to fetch data
+  }, []); // Runs once when the component mounts
 
-  const openApp = async (appName: string) => {
-    if (openedApps.some((app) => app.name === appName)) return;
+  // Function to open an app
+  const openApp = async (appName: string, typeContent: string) => {
+    // Check if the app is already open
+    const existingApp = openedApps.find((app) => app.name === appName);
+    if (existingApp) {
+      return; // If it's already open, do nothing
+    }
 
     try {
-      const module = await import(`./components/${appName}/${appName}`);
-      const NewComponent = module.default;
-      setOpenedApps((prev) => [...prev, { name: appName, Component: NewComponent }]);
+      // Dynamically load the app component
+      if (typeContent !== "folder") {
+        const module = await import(`./components/${appName}/${appName}`);
+        const NewComponent = module.default;
+
+        // Calculate new zIndex for the opened app
+        const newZIndex = Math.max(0, ...openedApps.map((app) => app.zIndex)) + 1;
+
+        // Update state to open the new app
+        setOpenedApps((prev) => [
+          ...prev,
+          { name: appName, Component: NewComponent, typeContent, zIndex: newZIndex },
+        ]);
+      } else {
+        // If the content type is "folder", load the folder component
+        const module = await import(`./components/${typeContent}/${typeContent}`);
+        const NewComponent = module.default;
+
+        const newZIndex = Math.max(0, ...openedApps.map((app) => app.zIndex)) + 1;
+
+        setOpenedApps((prev) => [
+          ...prev,
+          { name: appName, Component: NewComponent, typeContent, zIndex: newZIndex },
+        ]);
+      }
     } catch (error) {
-      console.error(`No se pudo cargar el componente: ${appName}`, error);
+      console.error(`Failed to load component: ${appName}`, error); // Log error if the component can't be loaded
     }
   };
 
+  // Function to close an app
   const closeApp = (appName: string) => {
-    setOpenedApps((prev) => prev.filter((app) => app.name !== appName));
+    setOpenedApps((prev) => prev.filter((app) => app.name !== appName)); // Remove the app from the list of opened apps
   };
 
+  // Function to bring an app to the front
+  const bringToFront = (appName: string) => {
+    setOpenedApps((prev) => {
+      const appIndex = prev.findIndex((app) => app.name === appName);
+      if (appIndex === -1) return prev;
+
+      // Reorder the apps by zIndex to bring the selected app to the front
+      const updatedApps = [...prev];
+      const clickedApp = updatedApps.splice(appIndex, 1)[0];
+      clickedApp.zIndex =
+        Math.max(0, ...updatedApps.map((app) => app.zIndex)) + 1;
+      updatedApps.push(clickedApp);
+
+      return updatedApps;
+    });
+  };
+
+  // Group apps to avoid duplicates and optimize access
+  const groupedApps = apps.reduce((acc, app) => {
+    if (!acc[app.name]) {
+      acc[app.name] = app;
+    }
+    return acc;
+  }, {} as { [key: string]: Post });
+
+  // useEffect to automatically open apps with checkbox 'yes'
+  useEffect(() => {
+    Object.values(groupedApps).map((app) => {
+      if (app.checkbox === "yes" && app.type === "desktop") {
+        openApp(app.name, app.typeContent);
+      }
+    });
+  }, [apps]); // Runs when the 'apps' state changes
+
+  // State to manage media files
+  const [media, setMedia] = useState<Media[]>([]);
+  useEffect(() => {
+    const fetchMedia = async () => {
+      const response = await fetch(
+        "https://necronomicapitalism.cloud/wp-json/wp/v2/media?per_page=50"
+      );
+      const data = await response.json();
+      setMedia(data); // Update state with the fetched media data
+    };
+    fetchMedia(); // Call the function to fetch media
+  }, []); // Runs once when the component mounts
+
+  // Renders the apps and opened components
   return (
     <div>
       <div className={styles.containerApps}>
-        {apps.map((app) =>
+        {/* Displays apps on the desktop */}
+        {Object.values(groupedApps).map((app) =>
           app.type === "desktop" ? (
-            <div key={app.id} className={styles.appItems} onDoubleClick={() => openApp(app.title)}>
-              {app.icon && <img src={app.icon} alt={app.title} width={30} height={30} />}
+            <div
+              key={app.id}
+              className={styles.appItems}
+              onDoubleClick={() => {
+                if (app.typeContent !== "hiper") {
+                  openApp(app.name, app.typeContent); // Open the app on the desktop
+                } else {
+                  window.open(app.url, "_blank"); // Open the URL in a new window
+                }
+              }}
+            >
+              {app.icon && (
+                <img src={app.icon} alt={app.name} width={30} height={30} />
+              )}
               <h2
                 className={orbitron.className}
                 style={{
@@ -66,17 +177,32 @@ export default function Page() {
                   padding: "1px 3px",
                 }}
               >
-                {app.title}
+                {app.name}
               </h2>
             </div>
           ) : null
         )}
       </div>
 
-      {openedApps.map(({ name, Component }) => (
-        <div key={name}>
-          <Component onClose={() => closeApp(name)} />
-        </div>
+      {/* Displays the opened components */}
+      {openedApps.map(({ name, Component, typeContent, zIndex }) => (
+        typeContent !== "folder" ? (
+          <div
+            key={name}
+            style={{ position: "absolute", zIndex }}
+            onClick={() => bringToFront(name)}
+          >
+            <Component onClose={() => closeApp(name)} />
+          </div>
+        ) : (
+          <div
+            key={name}
+            style={{ position: "absolute", zIndex }}
+            onClick={() => bringToFront(name)}
+          >
+            <Folder onClose={() => closeApp(name)} folderName={name} mediaFile={media} />
+          </div>
+        )
       ))}
     </div>
   );
