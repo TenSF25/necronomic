@@ -48,9 +48,9 @@ This plugin allows the management of applications and the definition of their co
 - **Custom options by content type:**
   - `Themes`: `Theme URL` and `Title` (Example: Visual theme name)
   - `Information`: `Title` (Example: "About Us")
-  - `Music`: `Name Music`, `Album Music`, `Image URL Music`, `Url Music`
+  - `Music`: `NameMusic`, `Album`, `ImageMusic`, `UrlMusic`
   - `Folder`: File management using the **Media** plugin
-  - `Hyperlink`: Allows linking only to an external URL.
+  - `Hyperlink`: Allows linking to an external URL.
   - `Video`: Link to multimedia content uploaded to the system.
 
 📌 **Example of Connection between Components:**
@@ -74,6 +74,9 @@ Each uploaded file can be edited to add:
 - **Title**
 - **Description** (to link it to specific folders)
 - **Caption** (where a reference is assigned to link it to another component)
+
+📌 **Setting a Default Wallpaper**
+To establish a default background image, type `default` in the **Description** field of the file within the **Media** plugin.
 
 ---
 
@@ -120,5 +123,3 @@ The following components are ready to use in the application:
 ---
 
 🛠 **This system facilitates the administration of dynamic content, allowing the structured and automated linking of files, multimedia, and components.**
-
-"# necronomic" 
