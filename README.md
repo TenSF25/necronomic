@@ -1,10 +1,12 @@
-# Next.js project with WordPress CMS
+# 📌 Next.js Project with WordPress CMS
 
-This is a project based on [Next.js](https://nextjs.org) using [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app) and WordPress as CMS for content management.
+This project is based on [Next.js](https://nextjs.org) and uses [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app) with WordPress as the CMS for content management. It includes custom plugins for data and media management.
+
+---
 
 ## 📖 Table of Contents
 - [Installation and Usage](#installation-and-usage)
-- [Content Management with WordPress](#content-management-with-wordpress)
+- [Integration with WordPress](#integration-with-wordpress)
 - [Plugins](#plugins)
 - [Media](#media)
 - [Available Components](#available-components)
@@ -29,85 +31,94 @@ bun dev
 
 Then, open [http://localhost:3000](http://localhost:3000) in your browser to see the result.
 
-You can start editing the page by editing `app/page.tsx`. The changes will be reflected automatically.
+You can start editing the page by modifying `app/page.tsx`. The changes will be reflected automatically.
 
 This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to load and optimize fonts such as [Geist](https://vercel.com/font).
 
 ---
 
-## 📂 Content Management with WordPress
+## 🔌 Integration with WordPress
 
-To manage the content, WordPress is used with custom plugins.
-You can access the administration panel here:
-🔗 [WordPress Dashboard](https://necronomicapitalism.cloud/wp-admin)
+### **1️⃣ Plugin: Data Manager**
+This plugin allows the management of applications and the definition of their content. The following configurations can be made:
 
-### 🔌 Plugins
+- **Application Type:** `Desktop` | `Options`
+- **Auto-Open:** `Yes` | `No`
+- **Content Type:** `Themes` | `Information` | `Music` | `Folder` | `Hyperlink` | `Video`
+- **Custom options by content type:**
+  - `Themes`: `Theme URL` and `Title` (Example: Visual theme name)
+  - `Information`: `Title` (Example: "About Us")
+  - `Music`: `Name Music`, `Album Music`, `Image URL Music`, `Url Music`
+  - `Folder`: File management using the **Media** plugin
+  - `Hyperlink`: Allows linking only to an external URL.
+  - `Video`: Link to multimedia content uploaded to the system.
 
-#### **Data Manager**
-Allows you to upload applications and define their content.
-It has the following options:
-
-- **Type of App**:
-- `Desktop`: Displays the app on the desktop.
-- `Options`: The app appears in a selection menu at the top left.
-
-- **Auto Open** (`Yes / No`): Defines whether the app opens automatically when the application is started.
-
-- **Content Type** (Type of content within the app):
-- `Themes`: Wallpapers with image and title.
-- `Info`: Textual information within an app.
-- `Hyperlinked`: Links to external pages.
-- `Music`: Audio files with title, album, image and URL.
-- `Folder`: Allows uploading files organized in folders.
-
-🔹 **Note**: When creating an app, the name must match that of the component to be used (except in `Folder` type apps, where I am working on improving this restriction).
-
-#### **Data Control**
-Manages the data created in **Manager of Data**, allowing you to delete or consult it.
+📌 **Example of Connection between Components:**
+To establish links between different internal components, the `Reference ID` field is used, available in any content type within the **Data Manager**. This ID is obtained from the **Data Control Plugin** and allows elements within the system to be dynamically linked.
 
 ---
 
-### 📁 Media
+### **2️⃣ Plugin: Data Control**
+This plugin manages the data created in the **Data Manager**, allowing it to be viewed and deleted as needed.
 
-The **Media** plugin allows you to upload files (images, videos, audios, etc.).
-Each uploaded file can be edited to add information such as title and description.
+---
 
-#### **Usage for `Folder` Apps**
-To assign files to a `Folder` app, follow these steps:
+### **3️⃣ Plugin: Media (File Management)**
+This plugin allows the upload and editing of multimedia files such as:
+- 📷 Images
+- 🎥 Videos
+- 🎵 Audios
+- 📄 PDF or text documents
 
-1. **Create the App in `Manager of Data`**
-- Choose `Folder` as the content type.
-- Assign a name (example: `MyDocuments`).
+Each uploaded file can be edited to add:
+- **Title**
+- **Description** (to link it to specific folders)
+- **Caption** (where a reference is assigned to link it to another component)
 
-2. **Upload Files in `Media`**
-- Upload the file in the **Media** plugin.
-- Edit the file and in the **Description** field, enter exactly the same name as the `Folder` app (`MyDocuments` in this case).
+---
 
-3. **Result**
-- Files with the description `MyDocuments` will be automatically assigned to the `MyDocuments` app within the system.
+## 📁 Using Folder Apps
+To assign files to a **Folder**-type application, follow these steps:
 
-#### **Usage for Videos in `Media Player`**
-To have a **video** file appear in the video player, type `"Media"` in the **Description** of the file under **Media**.
+1️⃣ **Create the application in the Data Manager**
+- Select `Folder` as the **Content Type**.
+- Assign a name (Example: `My Documents`).
+
+2️⃣ **Upload files in the Media plugin**
+- Upload the files to **Multimedia**.
+- Edit each file and, in the **Description** field, type the exact name of the folder (Example: `My Documents`).
+
+✅ **Result:** Files with the description `My Documents` will be automatically assigned to the `My Documents` application within the system.
+
+---
+
+## 🎬 Using Videos in the Media Player
+To have a video file appear in the **Media Player**, type `Multimedia` in the **File Description** field within the **Media** plugin.
 
 ---
 
 ## 🧩 Available Components
-The following components are ready to be used in the app:
+The following components are ready to use in the application:
 
 - 📁 `Folder`
 - ℹ `Information`
 - 🎵 `Music`
 - 🎨 `Themes`
+- 🔗 `Hyperlink`
 - 📽 `Video`
 
 ---
 
-## 💡 Useful Tips
+## 💡 Helpful Tips
 
-🔹 If you need a URL for an image, audio, or any file you have locally:
-1. Upload it to **Media**.
+🔹 **Get the URL of a media file**
+1. Upload the file in **Media**.
 2. Click on the uploaded file.
 3. Copy the **File URL**.
-4. Use that URL in your apps.
+4. Use that URL in your applications.
 
-### 🛠️ Developed with ❤️ by Thiago
+---
+
+🛠 **This system facilitates the administration of dynamic content, allowing the structured and automated linking of files, multimedia, and components.**
+
+"# necronomic" 
