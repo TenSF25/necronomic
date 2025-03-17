@@ -78,6 +78,9 @@ Each uploaded file can be edited to add:
 📌 **Setting a Default Wallpaper**
 To establish a default background image, type `default` in the **Description** field of the file within the **Media** plugin.
 
+📌 **Adding Multimedia Files to the Desktop**
+To add a multimedia file to the **Desktop**, type `desktop` in the **Description** field of the file within the **Media** plugin.
+
 ---
 
 ## 📁 Using Folder Apps
