@@ -64,7 +64,7 @@ The **Reference ID** field enables linking between elements. It can be obtained 
 
 ---
 
-### 2️⃣ Plugin: Data Control & Media Control
+### 2️⃣ Plugins: Data Control & Media Control
 
 **Data Control:** Allows you to view, manage, and delete data created via the **Data Manager**.
 
