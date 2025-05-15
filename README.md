@@ -1,21 +1,22 @@
 # 📌 Next.js Project with WordPress CMS
 
-This project is based on [Next.js](https://nextjs.org) and uses [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app) with WordPress as the CMS for content management. It includes custom plugins for data and media management.
+This project is built with [Next.js](https://nextjs.org) using [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app), and uses WordPress as a CMS for content management. It includes custom plugins for managing data, media files, and interactive components.
 
 ---
 
 ## 📖 Table of Contents
-- [Installation and Usage](#installation-and-usage)
-- [Integration with WordPress](#integration-with-wordpress)
-- [Plugins](#plugins)
-- [Media](#media)
-- [Available Components](#available-components)
-- [Helpful Tips](#helpful-tips)
-- [Contributions](#contributions)
+
+* [Installation & Usage](#installation--usage)
+* [WordPress Integration](#wordpress-integration)
+* [Custom Plugins](#custom-plugins)
+* [Using Media Files](#using-media-files)
+* [Available Components](#available-components)
+* [Helpful Tips](#helpful-tips)
+* [Contributions](#contributions)
 
 ---
 
-## 🚀 Installation and Usage
+## 🚀 Installation & Usage
 
 First, start the development server:
 
@@ -29,100 +30,117 @@ pnpm dev
 bun dev
 ```
 
-Then, open [http://localhost:3000](http://localhost:3000) in your browser to see the result.
+Then open [http://localhost:3000](http://localhost:3000) in your browser to see the result.
 
-You can start editing the page by modifying `app/page.tsx`. The changes will be reflected automatically.
+You can start editing the page by modifying `app/page.tsx`. The changes will be applied automatically.
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to load and optimize fonts such as [Geist](https://vercel.com/font).
-
----
-
-## 🔌 Integration with WordPress
-
-### **1️⃣ Plugin: Data Manager**
-This plugin allows the management of applications and the definition of their content. The following configurations can be made:
-
-- **Application Type:** `Desktop` | `Options`
-- **Auto-Open:** `Yes` | `No`
-- **Content Type:** `Themes` | `Information` | `Music` | `Folder` | `Hyperlink` | `Video`
-- **Custom options by content type:**
-  - `Themes`: `Theme URL` and `Title` (Example: Visual theme name)
-  - `Information`: `Title` (Example: "About Us")
-  - `Music`: `NameMusic`, `Album`, `ImageMusic`, `UrlMusic`
-  - `Folder`: File management using the **Media** plugin
-  - `Hyperlink`: Allows linking to an external URL.
-  - `Video`: Link to multimedia content uploaded to the system.
-
-📌 **Example of Connection between Components:**
-To establish links between different internal components, the `Reference ID` field is used, available in any content type within the **Data Manager**. This ID is obtained from the **Data Control Plugin** and allows elements within the system to be dynamically linked.
+This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to load and optimize fonts like [Geist](https://vercel.com/font).
 
 ---
 
-### **2️⃣ Plugin: Data Control**
-This plugin manages the data created in the **Data Manager**, allowing it to be viewed and deleted as needed.
+## 🔌 WordPress Integration
+
+### 1️⃣ Plugin: Data Manager
+
+This plugin allows you to create and manage applications, defining their behavior and content. Each application can be configured with:
+
+* **Application Type:** `Desktop` | `Options`
+* **Auto Open:** `Yes` | `No`
+* **Content Type:** `Themes` | `Information` | `Music` | `Folder` | `Hyperlink` | `Video`
+* **Reference ID:** Dynamically links to other applications.
+* **Position X / Y:** Sets the window's position when opened on the desktop.
+
+#### Specific options based on content type:
+
+* **Themes:** `Theme URL`, `Title`
+* **Information:** `Title`
+* **Music:** `Track Name`, `Album`, `Image`, `Playback URL`
+* **Folder:** Files managed via the **Media** plugin
+* **Hyperlink:** External URL
+* **Video:** Link to uploaded video file
+
+📌 **Component Linking Example:**  
+The **Reference ID** field enables linking between elements. It can be obtained from either the **Data Control** or **Media Control** plugin, allowing structured navigation between windows.
 
 ---
 
-### **3️⃣ Plugin: Media (File Management)**
-This plugin allows the upload and editing of multimedia files such as:
-- 📷 Images
-- 🎥 Videos
-- 🎵 Audios
-- 📄 PDF or text documents
+### 2️⃣ Plugin: Data Control & Media Control
 
-Each uploaded file can be edited to add:
-- **Title**
-- **Description** (to link it to specific folders)
-- **Caption** (where a reference is assigned to link it to another component)
+**Data Control:** Allows you to view, manage, and delete data created via the **Data Manager**.
 
-📌 **Setting a Default Wallpaper**
-To establish a default background image, type `default` in the **Description** field of the file within the **Media** plugin.
-
-📌 **Adding Multimedia Files to the Desktop**
-To add a multimedia file to the **Desktop**, type `desktop` in the **Description** field of the file within the **Media** plugin.
+**Media Control:** Provides an enhanced and detailed view of uploaded media files.
 
 ---
 
-## 📁 Using Folder Apps
-To assign files to a **Folder**-type application, follow these steps:
+### 3️⃣ Plugin: Media (File Management)
 
-1️⃣ **Create the application in the Data Manager**
-- Select `Folder` as the **Content Type**.
-- Assign a name (Example: `My Documents`).
+This plugin allows uploading, viewing, and editing media files. It supports:
 
-2️⃣ **Upload files in the Media plugin**
-- Upload the files to **Multimedia**.
-- Edit each file and, in the **Description** field, type the exact name of the folder (Example: `My Documents`).
+* 📷 Images  
+* 🎥 Videos  
+* 🎵 Audio  
+* 📄 PDF or text documents
 
-✅ **Result:** Files with the description `My Documents` will be automatically assigned to the `My Documents` application within the system.
+Each file can be edited with the following fields:
+
+* **Title**
+* **Description:** Used to link to specific folders, video apps, or define special behaviors like setting as background or showing on desktop.
+* **Caption:** Where the Reference ID is added to link with other components.
+* **Custom Icon:** Especially used when the file is added to the desktop.
+* **Position X / Y:** Sets its position when displayed on screen.
+
+📌 **Set a default background image:**  
+Write `default` in the **Description** field.
+
+📌 **Add files to the desktop:**  
+Write `desktop` in the **Description** field.
+
+---
+
+## 📁 Using Folder-Type Applications
+
+To assign files to a **Folder** type application, follow these steps:
+
+1️⃣ **Create an app in the Data Manager:**
+
+* Select `Folder` as the **Content Type**.
+* Name the app (e.g., `My Documents`).
+
+2️⃣ **Upload files to the Media plugin:**
+
+* Upload the files.
+* Edit each file and write the exact folder name (e.g., `My Documents`) in the **Description** field.
+
+✅ **Result:** The files will be visible inside the corresponding folder application.
 
 ---
 
 ## 🎬 Using Videos in the Media Player
-To have a video file appear in the **Media Player**, type `Multimedia` in the **File Description** field within the **Media** plugin.
+
+To make a video file accessible from the **Media Player**, assign the value `Multimedia` to the **Description** field of the file.
 
 ---
 
 ## 🧩 Available Components
-The following components are ready to use in the application:
 
-- 📁 `Folder`
-- ℹ `Information`
-- 🎵 `Music`
-- 🎨 `Themes`
-- 🔗 `Hyperlink`
-- 📽 `Video`
+The following components are ready to use in the system:
+
+* 📁 `Folder`  
+* ℹ `Information`  
+* 🎵 `Music`  
+* 🎨 `Themes`  
+* 🔗 `Hyperlink`  
+* 📽 `Video`  
 
 ---
 
 ## 💡 Helpful Tips
 
-🔹 **Get the URL of a media file**
-1. Upload the file in **Media**.
-2. Click on the uploaded file.
-3. Copy the **File URL**.
-4. Use that URL in your applications.
+🔹 **How to get a media file URL**
 
----
+1. Upload the file using the **Media** plugin.  
+2. Click on the file.  
+3. Copy the **File URL**.  
+4. Paste it into any configurable field within your apps.
 
-🛠 **This system facilitates the administration of dynamic content, allowing the structured and automated linking of files, multimedia, and components.**
+🛠 **This system allows you to manage dynamic content visually, in a structured manner, with high flexibility for linking components.**
