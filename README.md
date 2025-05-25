@@ -44,9 +44,9 @@ This project uses [`next/font`](https://nextjs.org/docs/app/building-your-applic
 
 This plugin allows you to create and manage applications, defining their behavior and content. Each application can be configured with:
 
-* **Application Type:** `Desktop` | `Options`
+* **Application Type:** `Desktop` | `Options` | `Custom (select for subfolders)`
 * **Auto Open:** `Yes` | `No`
-* **Content Type:** `Themes` | `Information` | `Music` | `Folder` | `Hyperlink` | `Video`
+* **Content Type:** `Themes` | `Information` | `Music` | `Folder` | `SubFolder` | `Hyperlink` | `Video`
 * **Reference ID:** Dynamically links to other applications.
 * **Position X / Y:** Sets the window's position when opened on the desktop.
 
@@ -56,6 +56,7 @@ This plugin allows you to create and manage applications, defining their behavio
 * **Information:** `Title`
 * **Music:** `Track Name`, `Album`, `Image`, `Playback URL`
 * **Folder:** Files managed via the **Media** plugin
+* **SubFolder:** Adding subfolders to already created folders is handled the same way as regular folders.
 * **Hyperlink:** External URL
 * **Video:** Link to uploaded video file
 
@@ -64,7 +65,7 @@ The **Reference ID** field enables linking between elements. It can be obtained 
 
 ---
 
-### 2️⃣ Plugins: Data Control & Media Control
+### 2️⃣ Plugin: Data Control & Media Control
 
 **Data Control:** Allows you to view, manage, and delete data created via the **Data Manager**.
 
